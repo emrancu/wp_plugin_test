@@ -37,9 +37,9 @@ if (!defined('WPINC')) {
  */
 define('PLUGIN_NAME_VERSION', '1.0.0');
 
-global  $plugin_base ;
+global $plugin_base;
 
-$plugin_base =  plugin_basename(__FILE__);
+$plugin_base = plugin_basename(__FILE__);
 
 /**
  * The code that runs during plugin activation.
@@ -61,10 +61,14 @@ require_once plugin_dir_path(__FILE__) . 'actions/AddAction.php';
 $addAction = new AddAction();
 $addAction->addInitAction();
 
-function action_activate_header()
-{
-    return 'AL EMRAN';
-}
 
-// add the action
-add_action('activate_header', 'action_activate_header', 10, 0);
+require_once plugin_dir_path(__FILE__) . 'actions/sidenav/sideNavController.php';
+$menuRegister = new sideNavController();
+$menuRegister->init();
+
+
+require_once plugin_dir_path(__FILE__) . 'actions/api/ApiController.php';
+$api = new ApiController();
+$api->init();
+
+

@@ -1,78 +1,28 @@
 <?php
 
-
 class AddAction
 {
 
     public $plugin   ;
     public $pluginRoot   ;
-    public $menu_args   ;
-
+    public $namespace ;
     public function __construct()
     {
+        $this->namespace = 'BotNinja/v1' ;
         $this->plugin = $GLOBALS['plugin_base'];
         $this->pluginRoot = plugin_dir_path($this->plugin);
     }
 
     public function addInitAction()
     {
-        //  add_action( 'init', [$this, 'addPostType'] );
-
-        add_action('admin_menu', array($this, 'addAdminMenu'));
         add_action('admin_enqueue_scripts', array($this, 'addCss_and_JS'));
-
         add_filter('plugin_action_links_'.$this->plugin, [$this, 'settings_link']);
 
-    }
 
-    /**
-     * Admin Menu hook
-     *
-     * @return void
-     */
-    public function addAdminMenu() {
-        $this->registerMenu();
-        $this->registerSubMenu();
     }
 
 
-    public function registerMenu()
-    {
-        add_menu_page(
-            __('BotNinja', 'Dashboard'),
-            'BotNinja',
-            'manage_options',
-            'Bot-Ninja-Page',
-            [$this, 'admin_index'],
-            'dashicons-admin-site',
-            100
-        );
-     }
 
-    /**
-     * Register submenu
-     * @return void
-     */
-    public function registerSubMenu() {
-        add_submenu_page(
-            'Bot-Ninja-Page',
-            'Purchase Phone No.',
-            'Purchase Phone No.',
-            'manage_options',
-            'BotNinja',
-            array($this, 'submenu_page_callback')
-        );
-    }
-
-    /**
-     * Render submenu
-     * @return void
-     */
-    public function submenu_page_callback() {
-        echo '<div class="wrap">';
-        echo '<h2>Submenu title</h2>';
-        echo '</div>';
-    }
 
     public function settings_link($links)
     {
@@ -83,32 +33,20 @@ class AddAction
     }
 
 
-    public function admin_index()
+    function addCss_and_JS($hook)
     {
-        require_once plugin_dir_path(__FILE__) . '../templates/admin.php';
-    }
 
+        if ( 'toplevel_page_BotNinja' == $hook ) {
+            wp_enqueue_script('botNinjaScriptVue', 'https://cdn.jsdelivr.net/npm/vue', array(), '1.0.0', false);
+            wp_enqueue_script('botNinjaScriptVueRouter', 'https://cdnjs.cloudflare.com/ajax/libs/vue-router/2.3.0/vue-router.js', array(), '1.0.0', false);
 
-    function addCss_and_JS()
-    {
-        wp_enqueue_script( 'botNinjaStyle', plugins_url($this->pluginRoot). 'assets/index.js', array(), '1.0.0', true );
-        wp_enqueue_style( 'botNinjaStyle', plugins_url($this->pluginRoot). 'assets/style.css', array(), '1.0.0', true );
+            wp_enqueue_style('botNinjaStyleBootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', array(), '1.0.0', false);
+            wp_enqueue_script('botNinjaScriptBootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js', array(), '1.0.0', true);
+            wp_enqueue_script('botNinjaScriptIndex', plugins_url($this->pluginRoot) . 'assets/index.js', array(), '1.0.0', true);
+            wp_enqueue_style('botNinjaStyleIndex', plugins_url($this->pluginRoot) . 'assets/style.css', array(), '1.0.0', true);
 
-    }
-
-
-    public function addPostType()
-    {
-        register_post_type('BotNinja', [
-            'label' => 'BotNinja',
-            'public' => true,
-            'show_ui' => true,
-            'rewrite' => [
-                'slug' => 'news'
-            ]
-        ]);
-
-        flush_rewrite_rules();
+            wp_enqueue_script('botNinjaStyleVueApp', plugins_url($this->pluginRoot) . 'assets/vueComponent/vueApp.js', array(), '1.0.0', true);
+        }
     }
 
 
