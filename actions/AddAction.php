@@ -39,12 +39,15 @@ class AddAction
         if ( 'toplevel_page_BotNinja' == $hook ) {
             wp_enqueue_script('botNinjaScriptVue', 'https://cdn.jsdelivr.net/npm/vue', array(), '1.0.0', false);
             wp_enqueue_script('botNinjaScriptVueRouter', 'https://cdnjs.cloudflare.com/ajax/libs/vue-router/2.3.0/vue-router.js', array(), '1.0.0', false);
+            wp_enqueue_script('botNinjaScriptVueX', 'https://unpkg.com/vuex@latest', array(), '1.0.0', false);
 
             wp_enqueue_style('botNinjaStyleBootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css', array(), '1.0.0', false);
             wp_enqueue_script('botNinjaScriptBootstrap', 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js', array(), '1.0.0', true);
             wp_enqueue_script('botNinjaScriptIndex', plugins_url($this->pluginRoot) . 'assets/index.js', array(), '1.0.0', true);
-            wp_enqueue_style('botNinjaStyleIndex', plugins_url($this->pluginRoot) . 'assets/style.css', array(), '1.0.0', true);
+            wp_enqueue_style('botNinjaStyleIndex', plugins_url($this->pluginRoot) . 'assets/style.css', array(), '1.0.0', 'all');
 
+            wp_enqueue_script('botNinjaStyleVueStore', plugins_url($this->pluginRoot) . 'assets/vueComponent/store.js', array(), '1.0.0', true);
+            wp_enqueue_script('botNinjaStyleVueActions', plugins_url($this->pluginRoot) . 'assets/vueComponent/vueActions.js', array(), '1.0.0', true);
             wp_enqueue_script('botNinjaStyleVueApp', plugins_url($this->pluginRoot) . 'assets/vueComponent/vueApp.js', array(), '1.0.0', true);
         }
     }

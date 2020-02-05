@@ -1,3 +1,4 @@
-body{
- color:gray
+
+#vueApp .form-control{
+ max-width: 100% !important;
 }
